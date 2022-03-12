@@ -2,7 +2,7 @@
 
 Password Manager application, it saves all the entered details to .txt file
 
-Modules: tkinter, random, messagebox
+Modules: tkinter, random, messagebox, pyperclip
 Editor: VS code
 
 Scenario - 1 Generate Password

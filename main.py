@@ -2,11 +2,23 @@ from tkinter import *
 from tkinter import messagebox
 from random import shuffle, choice, randint
 
+#----------------------------------------------Password Generator-----------------------------------------------
+def generate_pass():
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
 
+    password_letter = [choice(letters) for _ in range(randint(8, 10))]  
+    password_symbol = [choice(symbols) for _ in range(randint(2, 4))]
+    password_numbers = [choice(numbers) for _ in range(randint(2, 4))]
 
-#----------------------------------
-#------------FUNCTION--------------
-#----------------------------------
+    password_list = password_letter+password_numbers+password_symbol
+    shuffle(password_list)
+
+    password = "".join(password_list)
+    pw_field.insert(0, password)
+
+#-----------------------------------------------------FUNCTION------------------------------------------------
 def add_data():
     website_data = website_field.get()
     email_data = un_field.get()
@@ -22,9 +34,7 @@ def add_data():
                 website_field.delete(0, END)
                 pw_field.delete(0, END)
 
-#----------------------------------
-#---------------UI-----------------
-#----------------------------------
+#----------------------------------------------------------UI---------------------------------------------------
 window = Tk()
 window.title("Password Generator")
 window.config(padx=20, pady=20)
@@ -34,7 +44,7 @@ t_image = PhotoImage(file='icon.png')
 canvas.create_image(123, 123, image=t_image)
 canvas.grid(row=0, column=1)
 
-#Labels-------------------------
+#Labels------------------------------------------------------
 website = Label(text='Website:')
 website.grid(row=1, column=0)
 
@@ -44,7 +54,7 @@ username.grid(row=2, column=0)
 password = Label(text='Password:')
 password.grid(row=3, column=0)
 
-#Entry fields--------------------
+#Entry fields-------------------------------------------------
 website_field = Entry(width=25)
 website_field.grid(row=1, column=1, columnspan=2, sticky='EW')
 website_field.focus()
@@ -56,12 +66,14 @@ un_field.insert(0, '@gmail.com')
 pw_field = Entry(width=11)
 pw_field.grid(row=3, column=1, sticky='WE')
 
-#Buttons--------------------------
+#Buttons-------------------------------------------------------
 pwd_btn = Button(text='Generate Password', command=generate_pass)
 pwd_btn.grid(row=3, column=2)
 
 add_btn = Button(text='Add', width=26, command=add_data)
 add_btn.grid(row=4, column=1 , columnspan=2, sticky='EW')
+
+
 
 
 window.mainloop()

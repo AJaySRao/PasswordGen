@@ -9,7 +9,7 @@ Scenario - 1 Generate Password
 1. Launch the application
 2. Enter 'website name', 'email' to their fields
 3. Click on Generate Password button
-   a. random strong password should be generated to password field
+   1. random strong password should be generated to password field
 4. Click Add button
    1. website entered details pop-up appears with 'OK' and 'Cancel' options.
    2. On clicking 'Cancel', application retains in same state.

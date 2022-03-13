@@ -23,6 +23,24 @@ def generate_pass():
     pyperclip.copy(password)
 
 #-----------------------------------------------------FUNCTION------------------------------------------------
+def search_m():
+    website = website_field.get()
+    try:
+        with open('data.json', 'r') as doc_search:
+            text = json.load(doc_search)
+    except FileExistsError:
+        messagebox.showerror(title='Error', message="No data file found!")
+    else:
+        if website in text:
+            messagebox.showinfo(title=website, message=f"Email: {text[website]['email']} \nPassword: {text[website]['password']}")
+        else:
+            messagebox.showerror(title="Error", message=f'No details for {website} exists!')
+            
+
+def data_write(content):
+    with open("data.json", 'w') as doc:
+        json.dump(content, doc, indent=4)
+
 def add_data():
     website_data = website_field.get()
     email_data = un_field.get()
@@ -40,16 +58,19 @@ def add_data():
     else:
         ok = messagebox.askokcancel(title='Website', message=f'These are the details entered: \nEmail: {email_data}\nPassword: {pw_data}')
         if ok:
-            with open("data.json", "r") as doc:
-                data = json.load(doc) #Read old data
-                data.update(new_data) #Update old data with new data
-            with open("data.json", 'w') as doc:
-                json.dump(data, doc, indent=4) #Write the updated data to json file
+            try:
+                with open("data.json", "r") as doc:
+                    data = json.load(doc) #Read old data
 
-                #doc.write(f'{website_data} | {email_data}| {pw_data}\n')
-                
-                website_field.delete(0, END)
-                pw_field.delete(0, END)
+            except FileNotFoundError:
+                data_write(new_data)
+
+            else:
+                data.update(new_data) #Update old data with new data
+                data_write(data)
+
+            website_field.delete(0, END)
+            pw_field.delete(0, END)
 
 #----------------------------------------------------------UI---------------------------------------------------
 window = Tk()
@@ -72,8 +93,8 @@ password = Label(text='Password:')
 password.grid(row=3, column=0)
 
 #Entry fields-------------------------------------------------
-website_field = Entry(width=25)
-website_field.grid(row=1, column=1, columnspan=2, sticky='EW')
+website_field = Entry(width=11)
+website_field.grid(row=1, column=1, sticky='EW')
 website_field.focus()
 
 un_field = Entry(width=25)
@@ -84,10 +105,13 @@ pw_field = Entry(width=11)
 pw_field.grid(row=3, column=1, sticky='WE')
 
 #Buttons-------------------------------------------------------
-pwd_btn = Button(text='Generate Password', command=generate_pass)
+search_btn = Button(text='Search', width=15, command=search_m)
+search_btn.grid(row=1, column=2)
+
+pwd_btn = Button(text='Generate Password', width=15, command=generate_pass)
 pwd_btn.grid(row=3, column=2)
 
-add_btn = Button(text='Add', width=26, command=add_data)
+add_btn = Button(text='Add', width=25, command=add_data)
 add_btn.grid(row=4, column=1 , columnspan=2, sticky='EW')
 
 
